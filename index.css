@@ -32,23 +32,7 @@
     fill: currentColor;
   }
 
-  .nav-scroller {
-    position: relative;
-    z-index: 2;
-    height: 2.75rem;
-    overflow-y: hidden;
-  }
 
-  .nav-scroller .nav {
-    display: flex;
-    flex-wrap: nowrap;
-    padding-bottom: 1rem;
-    margin-top: -1px;
-    overflow-x: auto;
-    text-align: center;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-  }
 
   .btn-bd-primary {
     --bd-violet-bg: #712cf9;
@@ -69,3 +53,43 @@
   .bd-mode-toggle {
     z-index: 1500;
   }
+
+  .svg-red rect,
+        .svg-red text,
+        .svg-blue rect,
+        .svg-blue text {
+            transition: fill 0.5s ease;
+        }
+
+        
+        .svg-red rect {
+            fill: #e83e8c; 
+        }
+
+        .svg-red text {
+            fill: #e83e8c;
+        }
+
+        .svg-blue rect {
+            fill: #007bff; 
+        }
+
+        .svg-blue text {
+            fill: #007bff;
+        }
+
+        .svg-red:hover rect {
+            fill: #007bff;
+        }
+
+        .svg-red:hover text {
+            fill: #007bff;
+        }
+
+        .svg-blue:hover rect {
+            fill: #e83e8c;
+        }
+
+        .svg-blue:hover text {
+            fill: #e83e8c;
+        }
