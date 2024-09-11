@@ -2,6 +2,8 @@ let form = document.forms.createTask;
 let createTaskButton = document.querySelector(".create");
 let undoneTasksPlace = document.querySelector(".undoneTasks")
 let doneTasksPlace = document.querySelector(".doneTasks")
+let saveButton = document.querySelector("footer a:first-child");
+let dropZone = document.querySelector(".dropZone")
 
 let clearButton = document.querySelector(".clear");
 let allDoneButton = document.querySelector(".allDone");
@@ -118,6 +120,33 @@ function saveTask(input, oldTaskName) {
   refresh();
 }
 
+function saveTasksToFile() {
+  let tasks = {
+      undone: undoneTasks,
+      done: doneTasks
+  };
+  let tasksJSON = JSON.stringify(tasks);
+  let blob = new Blob([tasksJSON], { type: "application/json" });
+  let link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "tasks.json";
+  link.click();
+}
+
+
+function loadTasksFromFile(file) {
+  const reader = new FileReader();
+
+  reader.onload = (e) => {
+      const tasksData = JSON.parse(e.target.result);
+      undoneTasks = undoneTasks.concat(tasksData.undone || []);
+      doneTasks = doneTasks.concat(tasksData.done || []);
+      refresh(); 
+  };
+
+  reader.readAsText(file);
+}
+
 
 createTaskButton.addEventListener("click", () => {
     let inputTask = form.elements.task;
@@ -136,3 +165,26 @@ createTaskButton.addEventListener("click", () => {
 
 clearButton.addEventListener("click", clearTasks);
 allDoneButton.addEventListener("click", allDoneTasks);
+saveButton.addEventListener("click", saveTasksToFile);
+
+dropZone.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  dropZone.classList.add('hover');
+});
+
+dropZone.addEventListener('dragleave', () => {
+  dropZone.classList.remove('hover');
+});
+
+dropZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropZone.classList.remove('hover');
+
+  const file = e.dataTransfer.files[0];
+  if (file && file.type === 'application/json') {
+      loadTasksFromFile(file);
+  } else {
+      alert("Пожалуйста, перетащите корректный JSON файл.");
+  }
+});
+
